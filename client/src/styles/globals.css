@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 
-home {
-    background-color: aqua;
+* {
+    font-family: "Rubik", sans-serif;
+    font-size: large;
 }
