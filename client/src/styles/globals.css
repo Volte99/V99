@@ -5,5 +5,11 @@
 
 * {
     font-family: 'Rubik', sans-serif;
-    font-family: 'Rubik Iso', cursive;
+    font-family: 'Rubik-iso', cursive;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;background-color: black;
 }
