@@ -14,9 +14,9 @@ const Footer = () => {
        <h1 className="w-full text-3xl font-bold text-white">V99.</h1>
        <p className="py-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto in, consectetur, provident odit dolore beatae maiores rerum earum dolorem nobis natus esse delectus temporibus tempore cumque doloremque non. Labore, temporibus.</p>
        <div className="flex justify-between md:w-[75%] my-6 ">
-         <FaFacebookSquare size={30}/>
+          <a><FaFacebookSquare size={30}/></a>
          <FaInstagramSquare size={30}/>
-         <FaGithubSquare size={30}/>
+          <a href="https://github.com/Volte99/V99"><FaGithubSquare size={30}/></a>
          <FaTwitterSquare size={30}/>
          <FaYoutubeSquare size={30}/>
        </div>

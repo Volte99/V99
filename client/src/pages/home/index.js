@@ -1,10 +1,30 @@
-import React from 'react'
+import { io } from 'socket.io-client';
+import { useEffect, useState } from 'react'
 
-function index() {
+const socket = io.connect("http://localhost:8000");
+
+function App() {
+  const [ message, setMessage] = useState("");
+  const [ messageReceived, setMessageReceived ] = useState("");
+  const sendMessage = () => {
+     socket.emit("send message", {message});
+   };
+
+   useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setMessageReceived(data.message);
+    });
+   }, [socket]);
+
   return (
-    <div>Hi!!! I am the Home you will see when you are logged in properly</div>
-    
+    <div className="App">
+      <input placeholder="Message..." onChange={(e) => {
+        setMessage(e.target.value);
+      }} />
+      <button onClick={sendMessage} className=" bg-red-600">Send Message</button>
+      <h1 className="text-white">Message: {messageReceived}</h1>
+    </div>
   )
 }
 
-export default index
+export default App

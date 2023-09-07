@@ -1,5 +1,6 @@
 import React from 'react'
 import Typed from 'react-typed'
+import Link from 'next/link'
 
 const Hero = () => {
 
@@ -20,8 +21,8 @@ const Hero = () => {
           <p className="md:text-2xl text-x l font-bold text-amber-400 py-3">
           A chat space website where you can communicate, share various files, assign tasks and stay connected.
           </p>
-          <button className="bg-[cyan] w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black">
-            Get Started
+          <button className="bg-[cyan] w-[200px] rounded-lg font-medium my-6 mx-auto py-3 text-black">
+            <Link href="/login">Get Started</Link>
           </button>
         </div>
     </div>
