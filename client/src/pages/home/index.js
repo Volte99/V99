@@ -7,7 +7,7 @@ function App() {
   const [ message, setMessage] = useState("");
   const [ messageReceived, setMessageReceived ] = useState("");
   const sendMessage = () => {
-     socket.emit("send message", {message});
+     socket.emit("chat message", {message});
    };
 
    useEffect(() => {

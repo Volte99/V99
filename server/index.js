@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const http = require("http");
 const { Server } = require("socket.io")
+const mongoose = require("mongoose")
 const cors = require("cors");
+require("dotenv").config();
 
 app.use(cors());
 
@@ -17,13 +19,27 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
-
-    socket.on("send message", (data) => {
+    //listen for incoming messgages
+    socket.on("chat message", (data) => {
         socket.broadcast.emit("receive_message", data); 
     })
 });
 
+//connecting to database(mongoDb)
+const connectDb = async () => {
+    try {
+      const res = await mongoose.connect(process.env.DATABASE_URI);
+      if (res) console.log("connected to mongodb");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  connectDb();
+        
 
-server.listen(8000, () => {
-    console.log("SERVER IS RUNNING");
+
+//start the server
+const port = process.env.PORT;
+server.listen(port, () => {
+    console.log(`SERVER IS LISTENING ${port}`);
 });
