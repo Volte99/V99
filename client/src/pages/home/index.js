@@ -6,10 +6,12 @@ const socket = io.connect("http://localhost:8000");
 function App() {
   const [ message, setMessage] = useState("");
   const [ messageReceived, setMessageReceived ] = useState("");
+  //sends the message
   const sendMessage = () => {
      socket.emit("chat message", {message});
    };
 
+   //used to render the recieved message
    useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessageReceived(data.message);
