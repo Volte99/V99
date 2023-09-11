@@ -1,6 +1,7 @@
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import Link  from "next/link";
+import { useState } from "react";
 
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
@@ -19,8 +20,10 @@ const regsitrationSchema = yup.object().shape({
     .required("Required"),
 });
 
-function Register() {
-  return (<>
+const Register = () => {
+  return (
+  
+    <div>
     <div className="m-9 gap-4 flex flex-col items-center justify-center">
         <h1 className="font-bold text-5xl text-white">Register</h1>
           <Formik
@@ -33,7 +36,6 @@ function Register() {
       onSubmit={values => {
         // same shape as initial values
         console.log(values);
-        // registerUser(values);
       }}
     >
       {({ errors, touched }) => (
@@ -70,7 +72,7 @@ function Register() {
       )}
     </Formik>
     </div>
-    </>
+    </div>
   )
 }
 

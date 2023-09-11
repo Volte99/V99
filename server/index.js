@@ -1,13 +1,14 @@
 const express = require("express");
 const app = express();
+const UsersRoutes = require("./routes/users")
 const http = require("http");
 const { Server } = require("socket.io")
-const mongoose = require("mongoose")
 const cors = require("cors");
+const connectDb = require("./db/connection")
 require("dotenv").config();
-
 app.use(cors());
-
+app.use(express.json());
+app.use(UsersRoutes);
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -25,22 +26,8 @@ io.on("connection", (socket) => {
     })
 });
 
-//connecting to database(mongoDb)
-const connectDb = async () => {
-    try {
-      const res = await mongoose.connect(process.env.MONGODB_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      if (res) console.log("connected to mongodb");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  connectDb();
         
-
-
+connectDb();
 //start the server
 const port = process.env.PORT;
 server.listen(port, () => {
