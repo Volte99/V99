@@ -1,6 +1,8 @@
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
@@ -16,7 +18,35 @@ const loginSchema = yup.object().shape({
 });
 
 function Login() {
-  return (<>
+  const router = useRouter();
+  const [responseMsg, setResponseMsg] = useState({ msgLabel: "", msgType: "" });
+   const loginUser = async (values) => {
+    try {
+      const response = await fetch("http://localhost:7000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        setResponseMsg({
+          msgLabel: "Login successful, Welcome!",
+          msgType: "success",
+        });
+        router.push("/home");
+      } else {
+        setResponseMsg({ msgLabel: result.msg, msgType: "error" });
+      }
+    } catch (error) {
+      setResponseMsg({ msgLabel: error.msg, msgType: "error" });
+      console.error("Error posting data:", error);
+    }
+  };
+  return (
+  <>
     <div className="m-9 gap-4 flex flex-col items-center justify-center">
         <h1 className="font-bold text-5xl text-white">Login</h1>
           <Formik
@@ -28,7 +58,7 @@ function Login() {
       onSubmit={values => {
         // same shape as initial values
         console.log(values);
-        // loginUser(values);
+        loginUser(values);
       }}
     >
       {({ errors, touched }) => (

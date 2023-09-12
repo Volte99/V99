@@ -2,6 +2,7 @@ import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import Link  from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
@@ -21,8 +22,35 @@ const regsitrationSchema = yup.object().shape({
 });
 
 const Register = () => {
+  const [responseMsg, setResponseMsg] = useState({ msgLabel: "", msgType: "" });
+  const router = useRouter();
+  const registerUser = async (values) => {
+    try {
+      const response = await fetch("http://localhost:7000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const result = await response.json();
+      if (response.status) {
+        setResponseMsg({
+          msgLabel: result.msg,
+          msgType: response.status == 409 ? "error" : "success",
+        });
+        console.log("Success posting data:", response.status )
+        if(response.status == 201){
+          router.push('/login')
+        }
+      }
+    } catch (error) {
+      setResponseMsg({ msgLabel: "Something went wrong", msgType: "error" });
+      console.error("Error posting data:", error);
+    }
+  };
+
   return (
-  
     <div>
     <div className="m-9 gap-4 flex flex-col items-center justify-center">
         <h1 className="font-bold text-5xl text-white">Register</h1>
@@ -36,6 +64,7 @@ const Register = () => {
       onSubmit={values => {
         // same shape as initial values
         console.log(values);
+        registerUser(values);
       }}
     >
       {({ errors, touched }) => (
