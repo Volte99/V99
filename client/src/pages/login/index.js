@@ -1,8 +1,10 @@
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "@/redux/reducerSlices/userSlice";
 
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
@@ -18,7 +20,15 @@ const loginSchema = yup.object().shape({
 });
 
 function Login() {
+  const dispatch = useDispatch();
   const router = useRouter();
+
+  const phoneInputRef = useRef(null);
+
+  useEffect(() => {
+    phoneInputRef.current.focus();
+  },[]);
+
   const [responseMsg, setResponseMsg] = useState({ msgLabel: "", msgType: "" });
    const loginUser = async (values) => {
     try {
@@ -32,6 +42,7 @@ function Login() {
       const result = await response.json();
 
       if (result.success) {
+        dispatch(setUserDetails(result));
         setResponseMsg({
           msgLabel: "Login successful, Welcome!",
           msgType: "success",
@@ -65,7 +76,7 @@ function Login() {
         <Form className="bg-gray-500 p-4 rounded-lg mt-4 w-96 flex flex-col items-center">
           <div className="flex flex-col" >
           <label htmlFor="phoneNumber" className="font-bold text-white">Phone Number</label>
-          <Field name="phoneNumber" placeholder="Enter phone number" className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+          <Field innerRef={phoneInputRef} name="phoneNumber" placeholder="Enter phone number" className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
           {errors.phoneNumber && touched.phoneNumber ? (
             <div className="text-red-600">{errors.phoneNumber}</div>
           ) : null}

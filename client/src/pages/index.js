@@ -1,11 +1,17 @@
 import Link from 'next/link'
 import "@/components/Layout"
-import { Inter } from 'next/font/google'
 import Layout from '@/components/Layout'
+import { useSelector } from 'react-redux'
+import App from './home/index'
 
-const inter = Inter({ subsets: ['latin'] })
+
+
 
 export default function Home() {
+  const {isLoggedIn} = useSelector(state => state.user)
+  if(isLoggedIn){
+    return <App />
+  }
   return(
    <>
    <Layout>
